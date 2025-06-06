@@ -1,4 +1,3 @@
-import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useNavigate } from 'react-router-dom';
@@ -59,7 +58,7 @@ const FoodCharts = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     gap: '20px',
-                    backgroundImage: 'url("public/images/background.jpg")',
+                    backgroundImage: 'url("/images/background.jpg")',
                     backgroundSize: '200px',
                     padding: '20px',
                     borderRadius: '10px'
