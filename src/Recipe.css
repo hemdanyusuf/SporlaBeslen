@@ -1,7 +1,7 @@
 /* Arka plan resmi için varsayılan stil */
 .recipe-container {
     padding: 20px;
-    background-image: url('public/images/kahvalti.jpg');
+    background-image: url('/images/kahvalti.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -31,5 +31,5 @@
 
 
 .new-background {
-    background-image: url('images/kahvalti.jpg');
+    background-image: url('/images/kahvalti.jpg');
 }

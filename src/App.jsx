@@ -1,8 +1,7 @@
-import React from 'react';
 import FoodCharts from './FoodCharts';
 import Recipe from './Recipe';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
+import './App.module.css';
 
 const App = () => {
   return (
