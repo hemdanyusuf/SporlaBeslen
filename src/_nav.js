@@ -28,6 +28,30 @@ const _nav = [
     },
   },
   {
+    component: CNavItem,
+    name: 'Inventory',
+    to: '/inventory',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Calorie Tracker',
+    to: '/calorie-tracker',
+    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Recipe Suggestions',
+    to: '/recipe-suggestions',
+    icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Settings',
+    to: '/settings',
+    icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: 'Theme',
   },
