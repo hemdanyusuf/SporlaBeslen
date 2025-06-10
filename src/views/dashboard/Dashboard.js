@@ -1,0 +1,95 @@
+import React, { useState } from 'react'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,
+  CForm,
+  CFormInput,
+  CButton,
+  CAlert,
+} from '@coreui/react'
+import { CChartBar } from '@coreui/react-chartjs'
+
+/**
+ * Dashboard
+ * Kullanıcıya basit bir kalori grafiği ve BMI (Vücut Kitle İndeksi) hesaplama formu sunar.
+ */
+const Dashboard = () => {
+  const [weight, setWeight] = useState('') // kilo (kg)
+  const [height, setHeight] = useState('') // boy (cm)
+  const [bmi, setBmi] = useState(null)
+
+  // BMI hesapla
+  const handleBmi = (e) => {
+    e.preventDefault()
+    const h = parseFloat(height) / 100
+    if (!h || !weight) return
+    const value = weight / (h * h)
+    setBmi(value.toFixed(2))
+  }
+
+  // Örnek kalori verisi (sabit)
+  const calorieData = {
+    labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+    datasets: [
+      {
+        label: 'Kalori Alımı',
+        backgroundColor: '#4bc0c0',
+        data: [2000, 1800, 2200, 1900, 2100, 2300, 2000],
+      },
+    ],
+  }
+
+  return (
+    <CRow>
+      {/* Kalori grafiği */}
+      <CCol xs={12} lg={6}>
+        <CCard className="mb-4">
+          <CCardHeader>Haftalık Kalori Alımı</CCardHeader>
+          <CCardBody>
+            <CChartBar data={calorieData} labels="labels" />
+          </CCardBody>
+        </CCard>
+      </CCol>
+
+      {/* BMI hesaplama */}
+      <CCol xs={12} lg={6}>
+        <CCard className="mb-4">
+          <CCardHeader>Vücut Kitle İndeksi Hesapla</CCardHeader>
+          <CCardBody>
+            <CForm className="row g-3" onSubmit={handleBmi}>
+              <CCol xs={6}>
+                <CFormInput
+                  type="number"
+                  label="Kilo (kg)"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                />
+              </CCol>
+              <CCol xs={6}>
+                <CFormInput
+                  type="number"
+                  label="Boy (cm)"
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                />
+              </CCol>
+              <CCol xs={12} className="text-end">
+                <CButton type="submit">Hesapla</CButton>
+              </CCol>
+            </CForm>
+            {bmi && (
+              <CAlert color="info" className="mt-3">
+                Hesaplanan BMI: {bmi}
+              </CAlert>
+            )}
+          </CCardBody>
+        </CCard>
+      </CCol>
+    </CRow>
+  )
+}
+
+export default Dashboard
