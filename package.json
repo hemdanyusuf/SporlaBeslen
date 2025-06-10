@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "sporilebeslen",
   "private": true,
   "version": "0.0.0",
@@ -27,7 +26,6 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-=======
   "name": "@coreui/coreui-free-react-admin-template",
   "version": "5.4.0",
   "description": "CoreUI Free React Admin Template",
@@ -80,7 +78,6 @@
     "postcss": "^8.5.2",
     "prettier": "3.5.1",
     "sass": "^1.85.0",
->>>>>>> da202cb0396e787e80eb717902a8ee7a46248db7
     "vite": "^6.1.0"
   }
 }
