@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -21,13 +21,22 @@ const Dashboard = () => {
   const [height, setHeight] = useState('') // boy (cm)
   const [bmi, setBmi] = useState(null)
 
+  const getBmiCategory = (value) => {
+    if (value < 18.5) return 'Zayıf'
+    if (value < 25) return 'Normal (sağlıklı)'
+    if (value < 30) return 'Fazla kilolu (pre-obez)'
+    if (value < 35) return '1. derece obezite'
+    if (value < 40) return '2. derece obezite'
+    return '3. derece (morbid) obezite'
+  }
+
   // BMI hesapla
   const handleBmi = (e) => {
     e.preventDefault()
     const h = parseFloat(height) / 100
     if (!h || !weight) return
     const value = weight / (h * h)
-    setBmi(value.toFixed(2))
+    setBmi(value)
   }
 
   // Örnek kalori verisi (sabit)
@@ -82,7 +91,7 @@ const Dashboard = () => {
             </CForm>
             {bmi && (
               <CAlert color="info" className="mt-3">
-                Hesaplanan BMI: {bmi}
+                Hesaplanan BMI: {bmi.toFixed(2)} ({getBmiCategory(bmi)})
               </CAlert>
             )}
           </CCardBody>
