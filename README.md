@@ -143,6 +143,10 @@ coreui-free-react-admin-template
 
 The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/docs/templates/installation/)
 
+Additional documentation:
+
+- [BMI kategorileri ve hesaplama](docs/BMI.md)
+
 ## Versioning
 
 For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Free Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
