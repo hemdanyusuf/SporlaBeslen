@@ -1,3 +1,13 @@
+from sqlalchemy import Column, Integer, String
+from database.init import Base
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+
 class User:
     def __init__(self, user_id, username):
         self.id = user_id
