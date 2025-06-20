@@ -1,8 +1,7 @@
 from flask import Flask, jsonify
 
-from routes.inventory import inventory_bp
-from routes.predict import predict_bp
-
+from backend.routes.inventory import inventory_bp
+from backend.routes.predict import predict_bp
 from flask_cors import CORS
 from database.init import init_db
 from models import user
@@ -12,6 +11,8 @@ init_db()
 
 app = Flask(__name__)
 CORS(app)
+
+init_db()
 
 app.register_blueprint(inventory_bp, url_prefix='/api')
 app.register_blueprint(predict_bp, url_prefix='/api')
