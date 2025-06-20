@@ -1,4 +1,3 @@
-import React from 'react'
 import { CCard, CCardBody, CCardHeader, CListGroup, CListGroupItem } from '@coreui/react'
 
 /**
