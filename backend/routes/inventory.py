@@ -1,13 +1,10 @@
-from flask import Blueprint, jsonify, request
-
-inventory_items = []
+from flask import Blueprint, jsonify
 
 inventory_bp = Blueprint('inventory', __name__)
 
-@inventory_bp.route('/inventory', methods=['GET', 'POST'])
+
+@inventory_bp.route('/inventory', methods=['GET'])
 def inventory_home():
-    if request.method == 'POST':
-        data = request.get_json() or {}
-        inventory_items.append(data)
-        return jsonify({'status': 'success'}), 201
-    return jsonify(inventory_items)
+    """Return a test JSON response for the inventory endpoint."""
+
+    return jsonify({"items": ["item1", "item2"]})
