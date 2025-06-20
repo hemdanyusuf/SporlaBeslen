@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { Suspense, memo } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 
@@ -30,4 +30,4 @@ const AppContent = () => {
   )
 }
 
-export default React.memo(AppContent)
+export default memo(AppContent)

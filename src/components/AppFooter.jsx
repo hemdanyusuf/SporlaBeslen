@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import { CFooter } from '@coreui/react'
 
 const AppFooter = () => {
@@ -20,4 +20,4 @@ const AppFooter = () => {
   )
 }
 
-export default React.memo(AppFooter)
+export default memo(AppFooter)

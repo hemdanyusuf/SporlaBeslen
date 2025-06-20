@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import routes from '../routes'
@@ -48,4 +48,4 @@ const AppBreadcrumb = () => {
   )
 }
 
-export default React.memo(AppBreadcrumb)
+export default memo(AppBreadcrumb)
