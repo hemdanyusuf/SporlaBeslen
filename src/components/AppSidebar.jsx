@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -56,4 +56,4 @@ const AppSidebar = () => {
   )
 }
 
-export default React.memo(AppSidebar)
+export default memo(AppSidebar)
