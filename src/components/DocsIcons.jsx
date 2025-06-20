@@ -1,4 +1,3 @@
-import React from 'react'
 
 import IconsImg from '../assets/images/icons.webp'
 
