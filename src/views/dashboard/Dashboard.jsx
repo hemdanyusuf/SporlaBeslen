@@ -12,6 +12,7 @@ import {
 } from '@coreui/react'
 import { CChartBar } from '@coreui/react-chartjs'
 import axios from 'axios'
+import ActivityLog from './ActivityLog'
 
 /**
  * Dashboard
@@ -124,6 +125,11 @@ const Dashboard = () => {
             )}
           </CCardBody>
         </CCard>
+      </CCol>
+
+      {/* Aktivite günlüğü */}
+      <CCol xs={12} lg={6}>
+        <ActivityLog />
       </CCol>
     </CRow>
   )
