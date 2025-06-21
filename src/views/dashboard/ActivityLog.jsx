@@ -25,8 +25,9 @@ const ActivityLog = () => {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get('/api/activity-log')
-      setLogs(res.data)
+      const res = await axios.get('/api/activity')
+      const data = Array.isArray(res.data) ? res.data : []
+      setLogs(data)
     } catch (err) {
       console.error(err)
     }
@@ -39,14 +40,18 @@ const ActivityLog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await axios.post('/api/activity-log', {
+      const res = await axios.post('/api/activity', {
         user_id: userId,
         activity_type: activityType,
         duration_minutes: duration,
         calories_burned: calories,
         date,
       })
-      setLogs([...logs, res.data])
+      if (Array.isArray(logs)) {
+        setLogs([...logs, res.data])
+      } else {
+        setLogs([res.data])
+      }
       setUserId('')
       setActivityType('')
       setDuration('')
@@ -59,8 +64,12 @@ const ActivityLog = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/activity-log/${id}`)
-      setLogs(logs.filter((log) => log.id !== id))
+      await axios.delete(`/api/activity/${id}`)
+      if (Array.isArray(logs)) {
+        setLogs(logs.filter((log) => log.id !== id))
+      } else {
+        setLogs([])
+      }
     } catch (err) {
       console.error(err)
     }
@@ -100,24 +109,25 @@ const ActivityLog = () => {
           <CButton type="submit">Ekle</CButton>
         </CForm>
         <CListGroup className="mt-4">
-          {logs.map((log) => (
-            <CListGroupItem
-              key={log.id}
-              className="d-flex justify-content-between align-items-center"
-            >
-              <span>
-                {log.date} - {log.activity_type} ({log.duration_minutes} dk,
-                {` ${log.calories_burned} kcal`})
-              </span>
-              <CButton
-                color="danger"
-                size="sm"
-                onClick={() => handleDelete(log.id)}
+          {Array.isArray(logs) &&
+            logs.map((log) => (
+              <CListGroupItem
+                key={log.id}
+                className="d-flex justify-content-between align-items-center"
               >
-                Sil
-              </CButton>
-            </CListGroupItem>
-          ))}
+                <span>
+                  {log.date} - {log.activity_type} ({log.duration_minutes} dk,
+                  {` ${log.calories_burned} kcal`})
+                </span>
+                <CButton
+                  color="danger"
+                  size="sm"
+                  onClick={() => handleDelete(log.id)}
+                >
+                  Sil
+                </CButton>
+              </CListGroupItem>
+            ))}
         </CListGroup>
       </CCardBody>
     </CCard>
