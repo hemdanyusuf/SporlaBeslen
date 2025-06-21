@@ -1,33 +1,27 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
+
+# Gerekli blueprint'leri al
 from routes.inventory import inventory_bp
 from routes.predict import predict_bp
+from routes.users import user_bp
 
-
-from backend.routes.inventory import inventory_bp
-from backend.routes.predict import predict_bp
-from backend.routes.users import users_bp
-from backend.database.init import init_db
-from flask_cors import CORS
+# Veritabanı başlatıcı
 from database.init import init_db
-from models import user  # kullanıcı modelini yüklemiş olduk
-from sqlalchemy import Column, Integer, String
-from database.init import Base  # Base, declarative_base() ile tanımlanmış olmalı
 
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    username = Column(String, nullable=False)
-
+# Modeli içeri al (oluşması için)
+from models import user, inventory
 
 app = Flask(__name__)
 CORS(app)
 
-init_db()  # modeller yüklendikten sonra çağrılmalı
+# Tabloları oluştur
+init_db()
 
+# Blueprint'leri kaydet
 app.register_blueprint(inventory_bp, url_prefix='/api')
 app.register_blueprint(predict_bp, url_prefix='/api')
-app.register_blueprint(users_bp, url_prefix='/api')
+app.register_blueprint(user_bp, url_prefix='/api')
 
 @app.route('/')
 def index():
