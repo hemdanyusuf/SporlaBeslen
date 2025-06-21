@@ -1,6 +1,12 @@
 from flask import Flask, jsonify
 from routes.inventory import inventory_bp
 from routes.predict import predict_bp
+
+
+from backend.routes.inventory import inventory_bp
+from backend.routes.predict import predict_bp
+from backend.routes.users import users_bp
+from backend.database.init import init_db
 from flask_cors import CORS
 from database.init import init_db
 from models import user  # kullanıcı modelini yüklemiş olduk
@@ -21,6 +27,7 @@ init_db()  # modeller yüklendikten sonra çağrılmalı
 
 app.register_blueprint(inventory_bp, url_prefix='/api')
 app.register_blueprint(predict_bp, url_prefix='/api')
+app.register_blueprint(users_bp, url_prefix='/api')
 
 @app.route('/')
 def index():
