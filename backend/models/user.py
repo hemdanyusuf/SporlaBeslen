@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from database.init import Base
 from sqlalchemy.schema import Table
+from sqlalchemy import Column, Integer, String, Date
+from datetime import date
 from database.init import Base
 
 
@@ -17,3 +19,8 @@ class User(Base):
     username = Column(String, nullable=False)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
+    height = Column(Integer)
+    weight = Column(Integer)
+    birthdate = Column(Date)
+    gender = Column(String)
+    goal = Column(String)

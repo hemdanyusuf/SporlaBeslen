@@ -26,6 +26,7 @@ const Inventory = () => {
   const fetchItems = async () => {
     try {
       const res = await axios.get('/api/inventory')
+      console.log("Gelen veri:", res.data) // 🔍 Konsola yaz
       setItems(res.data)
     } catch (err) {
       console.error(err)
@@ -73,7 +74,7 @@ const Inventory = () => {
           <CButton type="submit">Ekle</CButton>
         </CForm>
         <CListGroup className="mt-4">
-          {items.map((item) => (
+          {Array.isArray(items) && items.map((item) => (
             <CListGroupItem
               key={item.id}
               className="d-flex justify-content-between align-items-center"
