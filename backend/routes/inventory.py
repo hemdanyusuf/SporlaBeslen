@@ -1,8 +1,4 @@
 from flask import Blueprint, jsonify, request
-<<<<<<< HEAD
-=======
-
->>>>>>> 0ca50184150081960940dbfe7e7b440dd08abd4a
 from database.init import SessionLocal
 from models.inventory import Inventory
 

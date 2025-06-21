@@ -1,11 +1,7 @@
 from sqlalchemy import Column, Integer, String
-<<<<<<< HEAD
 from database.init import Base
 from sqlalchemy.schema import Table
-=======
-
 from database.init import Base
->>>>>>> 0ca50184150081960940dbfe7e7b440dd08abd4a
 
 
 class User(Base):
