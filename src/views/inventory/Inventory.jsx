@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -13,28 +13,50 @@ import axios from 'axios'
 
 /**
  * Inventory
- * Kullanıcının evindeki gıdaları listeler ve yeni ürün eklemek için form içerir.
- * Örnek olarak form gönderildiğinde Flask backend'ine POST isteği yapılır.
+ * Basit bir envanter yönetimi ekranı.
+ * GET /api/inventory ile veriler listelenir, POST /api/inventory ile yeni
+ * öğe eklenir ve DELETE /api/inventory/:id ile silme işlemi yapılır.
  */
 const Inventory = () => {
   const [items, setItems] = useState([])
-  const [name, setName] = useState('')
-  const [amount, setAmount] = useState('')
-  const [calorie, setCalorie] = useState('')
+  const [userId, setUserId] = useState('')
+  const [itemName, setItemName] = useState('')
+  const [quantity, setQuantity] = useState('')
+
+  const fetchItems = async () => {
+    try {
+      const res = await axios.get('/api/inventory')
+      setItems(res.data)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchItems()
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      // Flask backend'e veri gönderimi
-      await axios.post('http://localhost:5000/api/inventory', {
-        name,
-        amount,
-        calorie,
+      const res = await axios.post('/api/inventory', {
+        user_id: userId,
+        item_name: itemName,
+        quantity,
       })
-      setItems([...items, { name, amount, calorie }])
-      setName('')
-      setAmount('')
-      setCalorie('')
+      setItems([...items, res.data])
+      setUserId('')
+      setItemName('')
+      setQuantity('')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/inventory/${id}`)
+      setItems(items.filter((item) => item.id !== id))
     } catch (err) {
       console.error(err)
     }
@@ -45,19 +67,23 @@ const Inventory = () => {
       <CCardHeader>Gıda Envanteri</CCardHeader>
       <CCardBody>
         <CForm className="row g-3" onSubmit={handleSubmit}>
-          <CFormInput label="Ürün Adı" value={name} onChange={(e) => setName(e.target.value)} />
-          <CFormInput
-            label="Miktar (gr)"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <CFormInput label="Kalori" value={calorie} onChange={(e) => setCalorie(e.target.value)} />
+          <CFormInput label="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
+          <CFormInput label="Ürün Adı" value={itemName} onChange={(e) => setItemName(e.target.value)} />
+          <CFormInput label="Miktar" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
           <CButton type="submit">Ekle</CButton>
         </CForm>
         <CListGroup className="mt-4">
-          {items.map((item, idx) => (
-            <CListGroupItem key={idx}>
-              {item.name} - {item.amount}gr - {item.calorie} kalori
+          {items.map((item) => (
+            <CListGroupItem
+              key={item.id}
+              className="d-flex justify-content-between align-items-center"
+            >
+              <span>
+                {item.item_name} - {item.quantity} (User {item.user_id})
+              </span>
+              <CButton color="danger" size="sm" onClick={() => handleDelete(item.id)}>
+                Sil
+              </CButton>
             </CListGroupItem>
           ))}
         </CListGroup>
