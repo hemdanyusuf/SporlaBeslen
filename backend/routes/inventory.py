@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
-from backend.database.init import SessionLocal
-from backend.models.inventory import Inventory
+from database.init import SessionLocal
+from models.inventory import Inventory
 
 inventory_bp = Blueprint('inventory', __name__)
 
