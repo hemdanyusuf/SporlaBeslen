@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from backend.database.init import Base
+from database.init import Base
 
 class Inventory(Base):
     """Inventory items belonging to a specific user."""
