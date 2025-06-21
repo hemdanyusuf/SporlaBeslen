@@ -1,33 +1,12 @@
-from flask import Blueprint, request, jsonify
-from sqlalchemy.orm import Session
+from flask import Blueprint, jsonify, request
+from datetime import datetime
 from database.init import SessionLocal
 from models.user import User
-from flask import Blueprint, jsonify, request
-from backend.database.init import SessionLocal
-from backend.models.user import User
-from datetime import datetime
 
 user_bp = Blueprint('user', __name__)
 
 @user_bp.route('/users', methods=['GET'])
-def get_users():
-    db: Session = SessionLocal()
-    users = db.query(User).all()
-    db.close()
-    return jsonify([{"id": u.id, "username": u.username} for u in users])
-@user_bp.route('/users', methods=['POST'])
-def create_user():
-    data = request.get_json()
-    db: Session = SessionLocal()
-    new_user = User(username=data["username"])
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    db.close()
-    return jsonify({"id": new_user.id, "username": new_user.username})
-@users_bp.route('/users', methods=['GET'])
 def list_users():
-    """Return all users as JSON."""
     session = SessionLocal()
     try:
         users = session.query(User).all()
@@ -48,10 +27,8 @@ def list_users():
     finally:
         session.close()
 
-
-@users_bp.route('/users', methods=['POST'])
+@user_bp.route('/users', methods=['POST'])
 def create_user():
-    """Create a new user with the provided fields."""
     data = request.get_json() or {}
     name = data.get('name')
     email = data.get('email')
@@ -69,7 +46,7 @@ def create_user():
         try:
             birthdate = datetime.fromisoformat(birthdate_str).date()
         except ValueError:
-            return jsonify({'error': 'Invalid birthdate format. Use ISO format (YYYY-MM-DD)'}), 400
+            return jsonify({'error': 'Invalid birthdate format. Use YYYY-MM-DD'}), 400
 
     session = SessionLocal()
     try:
@@ -84,6 +61,7 @@ def create_user():
         )
         session.add(user)
         session.commit()
+        session.refresh(user)
         return jsonify({
             'id': user.id,
             'name': user.name,
