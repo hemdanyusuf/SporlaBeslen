@@ -26,10 +26,15 @@ const ActivityLog = () => {
   const fetchLogs = async () => {
     try {
       const res = await axios.get('/api/activity')
-      const data = Array.isArray(res.data) ? res.data : []
+      let data = res.data
+      if (Array.isArray(data?.logs)) {
+        data = data.logs
+      }
+      data = Array.isArray(data) ? data : []
       setLogs(data)
     } catch (err) {
       console.error(err)
+      setLogs([])
     }
   }
 
@@ -105,25 +110,28 @@ const ActivityLog = () => {
           <CButton type="submit">Ekle</CButton>
         </CForm>
         <CListGroup className="mt-4">
-          {Array.isArray(logs) &&
+          {Array.isArray(logs) && logs.length > 0 ? (
             logs.map((log) => (
-            <CListGroupItem
-              key={log.id}
-              className="d-flex justify-content-between align-items-center"
-            >
-              <span>
-                {log.date} - {log.activity_type} ({log.duration_minutes} dk,
-                {` ${log.calories_burned} kcal`})
-              </span>
-              <CButton
-                color="danger"
-                size="sm"
-                onClick={() => handleDelete(log.id)}
+              <CListGroupItem
+                key={log.id}
+                className="d-flex justify-content-between align-items-center"
               >
-                Sil
-              </CButton>
-            </CListGroupItem>
-          ))}
+                <span>
+                  {log.date} - {log.activity_type} ({log.duration_minutes} dk,
+                  {` ${log.calories_burned} kcal`})
+                </span>
+                <CButton
+                  color="danger"
+                  size="sm"
+                  onClick={() => handleDelete(log.id)}
+                >
+                  Sil
+                </CButton>
+              </CListGroupItem>
+            ))
+          ) : (
+            <CListGroupItem>Aktivite kaydı bulunamadı</CListGroupItem>
+          )}
         </CListGroup>
       </CCardBody>
     </CCard>
