@@ -25,8 +25,9 @@ const ActivityLog = () => {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get('/api/activity-log')
-      setLogs(res.data)
+      const res = await axios.get('/api/activity')
+      const data = Array.isArray(res.data) ? res.data : []
+      setLogs(data)
     } catch (err) {
       console.error(err)
     }
@@ -39,14 +40,16 @@ const ActivityLog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await axios.post('/api/activity-log', {
+      const res = await axios.post('/api/activity', {
         user_id: userId,
         activity_type: activityType,
         duration_minutes: duration,
         calories_burned: calories,
         date,
       })
-      setLogs([...logs, res.data])
+      setLogs((prevLogs) =>
+        Array.isArray(prevLogs) ? [...prevLogs, res.data] : [res.data]
+      )
       setUserId('')
       setActivityType('')
       setDuration('')
@@ -59,8 +62,10 @@ const ActivityLog = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/activity-log/${id}`)
-      setLogs(logs.filter((log) => log.id !== id))
+      await axios.delete(`/api/activity/${id}`)
+      setLogs((prevLogs) =>
+        Array.isArray(prevLogs) ? prevLogs.filter((log) => log.id !== id) : prevLogs
+      )
     } catch (err) {
       console.error(err)
     }
@@ -100,7 +105,8 @@ const ActivityLog = () => {
           <CButton type="submit">Ekle</CButton>
         </CForm>
         <CListGroup className="mt-4">
-          {logs.map((log) => (
+          {Array.isArray(logs) &&
+            logs.map((log) => (
             <CListGroupItem
               key={log.id}
               className="d-flex justify-content-between align-items-center"
