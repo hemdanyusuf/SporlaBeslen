@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   CCard,
   CCardBody,
@@ -11,6 +11,7 @@ import {
   CAlert,
 } from '@coreui/react'
 import { CChartBar } from '@coreui/react-chartjs'
+import axios from 'axios'
 
 /**
  * Dashboard
@@ -20,6 +21,20 @@ const Dashboard = () => {
   const [weight, setWeight] = useState('') // kilo (kg)
   const [height, setHeight] = useState('') // boy (cm)
   const [bmi, setBmi] = useState(null)
+  const [dailyCalories, setDailyCalories] = useState(null)
+
+  const fetchDailyCalories = async () => {
+    try {
+      const res = await axios.get('/api/recommend/1')
+      setDailyCalories(res.data.calories)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchDailyCalories()
+  }, [])
 
   const getBmiCategory = (value) => {
     if (value < 18.5) return 'Zayıf'
@@ -59,6 +74,19 @@ const Dashboard = () => {
           <CCardHeader>Haftalık Kalori Alımı</CCardHeader>
           <CCardBody>
             <CChartBar data={calorieData} labels="labels" />
+          </CCardBody>
+        </CCard>
+      </CCol>
+
+      {/* Günlük Kalori İhtiyacı */}
+      <CCol xs={12} lg={6}>
+        <CCard className="mb-4 w-100 p-3">
+          <CCardHeader>Günlük Kalori İhtiyacı</CCardHeader>
+          <CCardBody>
+            <h5>{dailyCalories ? `${dailyCalories} kcal` : '...'}</h5>
+            <div className="text-end mt-3">
+              <CButton onClick={fetchDailyCalories}>Yeniden Hesapla</CButton>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>
