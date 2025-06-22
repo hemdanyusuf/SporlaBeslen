@@ -1,4 +1,6 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
+
 from backend.routes.inventory import inventory_bp
 from backend.routes.predict import predict_bp
 from backend.routes.users import users_bp
@@ -6,13 +8,6 @@ from backend.routes.recommend import recommend_bp
 from backend.routes.recommendation import recommendation_bp
 from backend.routes.activity_log import activity_log_bp
 from backend.database.init import init_db
-from routes.inventory import inventory_bp
-from routes.predict import predict_bp
-from flask_cors import CORS
-from database.init import init_db
-from models import user
-
-init_db()
 
 
 app = Flask(__name__)
