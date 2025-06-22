@@ -1,14 +1,5 @@
 import os
-import sys
-from pathlib import Path
 import pandas as pd
-
-# Ensure the project root is on the import path when executed directly
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-
-# Allow models that expect 'database' package to be imported
-import backend.database as _database
-sys.modules.setdefault("database", _database)
 
 from backend.database.init import SessionLocal, init_db
 from backend.models.recipe import Recipe
