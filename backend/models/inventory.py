@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from database.init import Base
+from backend.database.init import Base
+
 
 class Inventory(Base):
     """Inventory items belonging to a specific user."""
@@ -14,4 +15,4 @@ class Inventory(Base):
     item_name = Column(String, nullable=False)
     quantity = Column(Integer, nullable=False)
 
-    user = relationship("User", backref="inventory_items")
+    user = relationship("User", back_populates="inventory_items")
