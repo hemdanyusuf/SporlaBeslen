@@ -5,5 +5,6 @@ from backend.database.init import Base
 from .user import User
 from .inventory import Inventory
 from .activity_log import ActivityLog
+from .recipe import Recipe
 
-__all__ = ["User", "Inventory", "ActivityLog", "Base"]
+__all__ = ["User", "Inventory", "ActivityLog", "Recipe", "Base"]

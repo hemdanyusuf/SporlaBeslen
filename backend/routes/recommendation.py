@@ -1,14 +1,15 @@
 from flask import Blueprint, jsonify, request
-import pandas as pd
-import os
 import ast
+
+from backend.database.init import SessionLocal
+from backend.models.recipe import Recipe
 
 recommendation_bp = Blueprint('recommendation', __name__)
 
 
 def parse_ner_cell(cell):
-    """Parse NER cell into a list of lower-case ingredients."""
-    if cell is None or (isinstance(cell, float) and pd.isna(cell)):
+    """Parse NER cell value from the database into a list of lower-case ingredients."""
+    if cell is None:
         return []
     if isinstance(cell, list):
         return [str(item).strip().lower() for item in cell]
@@ -36,16 +37,27 @@ def suggest_recipes():
 
     inventory_items = [item.strip().lower() for item in envanter.split(',') if item.strip()]
 
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'full_dataset_with_kcal_v2.csv')
-
+    session = SessionLocal()
     try:
-        df = pd.read_csv(data_path)
-    except Exception as exc:
-        return jsonify({'error': f'Failed to read dataset: {exc}'}), 500
+        recipes = (
+            session.query(Recipe)
+            .filter(Recipe.kcal_from_ingredients >= min_kcal)
+            .filter(Recipe.kcal_from_ingredients <= max_kcal)
+            .all()
+        )
 
-    filtered = df[(df['kcal_from_ingredients'] >= min_kcal) & (df['kcal_from_ingredients'] <= max_kcal)].copy()
-    filtered['ner_list'] = filtered['NER'].apply(parse_ner_cell)
-    filtered = filtered[filtered['ner_list'].apply(lambda ner: all(item in inventory_items for item in ner))]
+        result = []
+        for recipe in recipes:
+            ner_items = parse_ner_cell(recipe.NER)
+            if all(item in inventory_items for item in ner_items):
+                result.append(
+                    {
+                        'title': recipe.title,
+                        'ingredients': recipe.ingredients,
+                        'kcal_from_ingredients': recipe.kcal_from_ingredients,
+                    }
+                )
 
-    result = filtered[['title', 'ingredients', 'kcal_from_ingredients']].to_dict(orient='records')
-    return jsonify(result)
+        return jsonify(result)
+    finally:
+        session.close()
