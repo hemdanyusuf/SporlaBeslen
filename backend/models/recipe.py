@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+
 from backend.database.init import Base
 
 class Recipe(Base):
@@ -12,3 +13,5 @@ class Recipe(Base):
     ingredients = Column(String)
     kcal_from_ingredients = Column(Integer)
     NER = Column(String)
+
+

@@ -1,13 +1,11 @@
-
 """Model package initialization with SQLAlchemy Base."""
 
 from backend.database.init import Base
 
-from .user import User
-from .inventory import Inventory
 from .activity_log import ActivityLog
+from .inventory import Inventory
 from .recipe import Recipe
+from .user import User
 
 __all__ = ["User", "Inventory", "ActivityLog", "Recipe", "Base"]
 
-from .user import User

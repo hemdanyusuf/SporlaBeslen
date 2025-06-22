@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Date, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from backend.database.init import Base
@@ -17,4 +17,4 @@ class ActivityLog(Base):
     calories_burned = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
 
-    user = relationship("User", backref="activity_logs")
+    user = relationship("User", back_populates="activity_logs")

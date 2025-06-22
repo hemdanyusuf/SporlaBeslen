@@ -13,6 +13,9 @@ sys.modules.setdefault("database", _database)
 from backend.database.init import SessionLocal, init_db
 from backend.models.recipe import Recipe
 
+# Ensure all model tables are loaded before creating them
+from backend import models  # noqa: F401
+
 
 def load_recipes_from_csv(csv_path: str) -> None:
     """Load recipes from a CSV file into the database."""
@@ -35,7 +38,12 @@ def load_recipes_from_csv(csv_path: str) -> None:
 
 def main():
     csv_path = os.path.join("backend", "data", "full_dataset_with_kcal_v2.csv")
+
     init_db()
+
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"CSV file not found: {csv_path}")
+
     load_recipes_from_csv(csv_path)
 
 

@@ -1,9 +1,11 @@
-
-from sqlalchemy import Column, Integer, String, Date
+from __future__ import annotations
 
 from datetime import date
 
-from database.init import Base
+from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.orm import relationship
+
+from backend.database.init import Base
 
 
 class User(Base):
@@ -20,17 +22,6 @@ class User(Base):
     birthdate = Column(Date)
     gender = Column(String)
     goal = Column(String)
-from sqlalchemy import Column, Integer, String
-from database.init import Base
 
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, nullable=False)
-
-class User:
-    def __init__(self, user_id, username):
-        self.id = user_id
-        self.username = username
+    inventory_items = relationship("Inventory", back_populates="user")
+    activity_logs = relationship("ActivityLog", back_populates="user")
