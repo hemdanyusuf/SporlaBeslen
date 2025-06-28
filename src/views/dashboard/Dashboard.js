@@ -1,15 +1,5 @@
-import React, { useState } from 'react'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CForm,
-  CFormInput,
-  CButton,
-  CAlert,
-} from '@coreui/react'
+import React, { useState, useEffect } from 'react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow, CAlert } from '@coreui/react'
 import { CChartBar } from '@coreui/react-chartjs'
 
 /**
@@ -17,18 +7,24 @@ import { CChartBar } from '@coreui/react-chartjs'
  * Kullanıcıya basit bir kalori grafiği ve BMI (Vücut Kitle İndeksi) hesaplama formu sunar.
  */
 const Dashboard = () => {
-  const [weight, setWeight] = useState('') // kilo (kg)
-  const [height, setHeight] = useState('') // boy (cm)
   const [bmi, setBmi] = useState(null)
 
-  // BMI hesapla
-  const handleBmi = (e) => {
-    e.preventDefault()
-    const h = parseFloat(height) / 100
-    if (!h || !weight) return
-    const value = weight / (h * h)
-    setBmi(value.toFixed(2))
-  }
+  // Profil bilgilerini localStorage'dan alarak BMI hesapla
+  useEffect(() => {
+    const stored = localStorage.getItem('profile')
+    if (!stored) return
+    try {
+      const profile = JSON.parse(stored)
+      const h = parseFloat(profile.height) / 100
+      const w = parseFloat(profile.weight)
+      if (h && w) {
+        const value = w / (h * h)
+        setBmi(value.toFixed(2))
+      }
+    } catch (_) {
+      // ignore parse error
+    }
+  }, [])
 
   // Örnek kalori verisi (sabit)
   const calorieData = {
@@ -54,35 +50,18 @@ const Dashboard = () => {
         </CCard>
       </CCol>
 
-      {/* BMI hesaplama */}
+      {/* BMI bilgisi */}
       <CCol xs={12} lg={6}>
         <CCard className="mb-4">
-          <CCardHeader>Vücut Kitle İndeksi Hesapla</CCardHeader>
+          <CCardHeader>Vücut Kitle İndeksi</CCardHeader>
           <CCardBody>
-            <CForm className="row g-3" onSubmit={handleBmi}>
-              <CCol xs={6}>
-                <CFormInput
-                  type="number"
-                  label="Kilo (kg)"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                />
-              </CCol>
-              <CCol xs={6}>
-                <CFormInput
-                  type="number"
-                  label="Boy (cm)"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                />
-              </CCol>
-              <CCol xs={12} className="text-end">
-                <CButton type="submit">Hesapla</CButton>
-              </CCol>
-            </CForm>
-            {bmi && (
-              <CAlert color="info" className="mt-3">
-                Hesaplanan BMI: {bmi}
+            {bmi ? (
+              <CAlert color="info" className="m-0">
+                BMI: {bmi}
+              </CAlert>
+            ) : (
+              <CAlert color="warning" className="m-0">
+                Profil bilgileri eksik
               </CAlert>
             )}
           </CCardBody>
