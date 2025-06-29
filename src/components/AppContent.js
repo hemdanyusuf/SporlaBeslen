@@ -23,7 +23,12 @@ const AppContent = () => {
               )
             )
           })}
-          <Route path="/" element={<Navigate to="dashboard" replace />} />
+          <Route
+            path="/"
+            element={
+              <Navigate to={localStorage.getItem('profile') ? 'dashboard' : 'settings'} replace />
+            }
+          />
         </Routes>
       </Suspense>
     </CContainer>
