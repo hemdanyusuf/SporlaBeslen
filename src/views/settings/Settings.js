@@ -14,6 +14,7 @@ const Settings = () => {
   const [height, setHeight] = useState('')
   const [profile, setProfile] = useState(null)
   const [editing, setEditing] = useState(true)
+  const [showInfo, setShowInfo] = useState(false)
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const Settings = () => {
         setWeight(p.weight || '')
         setHeight(p.height || '')
         setEditing(false)
+        setShowInfo(false)
       } catch (_) {
         // ignore parse error
       }
@@ -42,6 +44,7 @@ const Settings = () => {
     setProfile(data)
     setMessage('Bilgiler kaydedildi')
     setEditing(false)
+    setShowInfo(false)
   }
 
   return (
@@ -78,7 +81,7 @@ const Settings = () => {
             />
             <CButton type="submit">Kaydet</CButton>
           </CForm>
-        ) : (
+        ) : showInfo ? (
           <CRow className="gy-3">
             {profile && (
               <CCol md={6}>
@@ -108,11 +111,30 @@ const Settings = () => {
               <CCard className="h-100 text-center">
                 <CCardHeader>Düzenle</CCardHeader>
                 <CCardBody className="d-flex justify-content-center align-items-center">
-                  <CButton onClick={() => setEditing(true)}>Düzenle</CButton>
+                  <CButton
+                    onClick={() => {
+                      setEditing(true)
+                      setShowInfo(false)
+                    }}
+                  >
+                    Düzenle
+                  </CButton>
                 </CCardBody>
               </CCard>
             </CCol>
           </CRow>
+        ) : (
+          <div className="d-flex gap-2">
+            <CButton onClick={() => setShowInfo(true)}>Bilgilerim</CButton>
+            <CButton
+              onClick={() => {
+                setEditing(true)
+                setShowInfo(false)
+              }}
+            >
+              Düzenleme
+            </CButton>
+          </div>
         )}
         {message && (
           <CAlert color="success" className="mt-3">
