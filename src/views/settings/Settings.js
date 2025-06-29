@@ -9,6 +9,7 @@ const Settings = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [age, setAge] = useState('')
   const [weight, setWeight] = useState('')
   const [height, setHeight] = useState('')
   const [profile, setProfile] = useState(null)
@@ -24,6 +25,7 @@ const Settings = () => {
         setName(p.name || '')
         setEmail(p.email || '')
         setPassword(p.password || '')
+        setAge(p.age || '')
         setWeight(p.weight || '')
         setHeight(p.height || '')
         setEditing(false)
@@ -35,7 +37,7 @@ const Settings = () => {
 
   const handleSave = (e) => {
     e.preventDefault()
-    const data = { name, email, password, weight, height }
+    const data = { name, email, password, age, weight, height }
     localStorage.setItem('profile', JSON.stringify(data))
     setProfile(data)
     setMessage('Bilgiler kaydedildi')
@@ -58,6 +60,12 @@ const Settings = () => {
             />
             <CFormInput
               type="number"
+              label="Yaş"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+            <CFormInput
+              type="number"
               label="Kilo (kg)"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
@@ -71,25 +79,40 @@ const Settings = () => {
             <CButton type="submit">Kaydet</CButton>
           </CForm>
         ) : (
-          <>
+          <CRow className="gy-3">
             {profile && (
-              <div className="mb-3">
-                <p>
-                  <strong>Ad:</strong> {profile.name}
-                </p>
-                <p>
-                  <strong>Email:</strong> {profile.email}
-                </p>
-                <p>
-                  <strong>Kilo:</strong> {profile.weight} kg
-                </p>
-                <p>
-                  <strong>Boy:</strong> {profile.height} cm
-                </p>
-              </div>
+              <CCol md={6}>
+                <CCard className="h-100">
+                  <CCardHeader>Bilgilerim</CCardHeader>
+                  <CCardBody>
+                    <p>
+                      <strong>Ad:</strong> {profile.name}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {profile.email}
+                    </p>
+                    <p>
+                      <strong>Yaş:</strong> {profile.age}
+                    </p>
+                    <p>
+                      <strong>Kilo:</strong> {profile.weight} kg
+                    </p>
+                    <p>
+                      <strong>Boy:</strong> {profile.height} cm
+                    </p>
+                  </CCardBody>
+                </CCard>
+              </CCol>
             )}
-            <CButton onClick={() => setEditing(true)}>Düzenle</CButton>
-          </>
+            <CCol md={6}>
+              <CCard className="h-100 text-center">
+                <CCardHeader>Düzenle</CCardHeader>
+                <CCardBody className="d-flex justify-content-center align-items-center">
+                  <CButton onClick={() => setEditing(true)}>Düzenle</CButton>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
         )}
         {message && (
           <CAlert color="success" className="mt-3">
